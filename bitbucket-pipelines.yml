@@ -11,6 +11,7 @@ pipelines:
    master: # -- When committing to master branch
     - step:
         name: Build
+        deployment: production
         caches:
           - node
         script: # Modify the commands below to build your repository.
