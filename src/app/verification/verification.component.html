@@ -1,0 +1,38 @@
+
+
+<div *ngIf="!waiting">
+    <div class='login_fields'>
+        <div class='login_fields__user'>
+            <div class='icon'>
+                <img src='{{ twitch_user?.logo }}' width="50" height="50">
+            </div>
+            <a href='https://twitch.tv/{{twitch_user?.display_name}}' target='_blank'> 
+                <input placeholder='Username' type='text' value='{{twitch_user?.display_name}}' readonly/>
+            </a>
+            <div class='validation'>
+                <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/tick.png'>
+            </div>
+        </div>
+        <div class='login_fields_status'>
+            <h3>{{ status_text }}</h3>
+        </div>
+        <div class='login_fields_info'>
+            <h5>{{ info_text }} <br *ngIf='error_message'> {{ error_message }} </h5>
+        </div>
+
+        <div *ngIf='!haveParams' class='login_fields__submit'>
+            <input (click)='twitchAuth()' type='submit' value="{{ getTranslation('twitch_button_title') }}" style="width:100%"/>
+        </div>
+        
+        <div *ngFor="let button of buttons" class='login_fields__submit_link'>
+            <input (click)='inviteClick(button)' type='submit' value="{{ button?.name }}" style="width:100%"/>
+        </div>
+        <div *ngIf='tgDisabled' class='login_fields_info'><h6>{{ notice_text }}</h6></div>
+    </div>
+</div>
+
+<div style="display:none;">
+    <iframe *ngIf='load_frame' [src]="frame_safe_url" (load)="incorrectScheme()"></iframe>
+</div>
+        
+<krya-spinner *ngIf='waiting'></krya-spinner>
