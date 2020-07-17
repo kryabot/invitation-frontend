@@ -8,9 +8,10 @@ image: node:current-alpine
 
 pipelines:
   branches: # Automated triggers on commits to branches
-   web-invitation: # -- When committing to master branch
+   master: # -- When committing to master branch
     - step:
         name: Build
+        deployment: production
         caches:
           - node
         script: # Modify the commands below to build your repository.
@@ -18,11 +19,6 @@ pipelines:
           - npm install --save-dev  --unsafe-perm node-sass
           - npm run ng build -- --prod --output-path=dist
           - ls -ltr dist
-        artifacts:
-          - dist/**
-    - step:
-        name: Deploy
-        script:
           - pipe: atlassian/ftp-deploy:0.3.3
             variables:
                 USER: $INVITATION_USER
@@ -31,8 +27,3 @@ pipelines:
                 REMOTE_PATH: '/'
                 LOCAL_PATH: 'dist' # Optional
                 # DEBUG: '' # Optional
-    - step:
-        name: Post-deployment
-        deployment: production
-        script:
-          - echo "todo"
