@@ -15,7 +15,7 @@ import { BackendService } from '../data/backend.service';
 })
 
 export class VerificationComponent implements OnInit, OnDestroy {
-    
+
     urlParams: Params;
     tgDisabled: boolean;
     telegram_url: string;
@@ -38,9 +38,9 @@ export class VerificationComponent implements OnInit, OnDestroy {
     telegram_base_url = 'tg://resolve?domain=KryaAuthBot&start=';
     telegram_official_url = 'https://t.me/KryaAuthBot?start=';
     telegram_alt_url = 'https://cflink.ru/KryaAuthBot?start=';
-    
-    constructor(private activatedRoute: ActivatedRoute, 
-                private sanitizer: DomSanitizer, 
+
+    constructor(private activatedRoute: ActivatedRoute,
+                private sanitizer: DomSanitizer,
                 private deviceService: DeviceDetectorService,
                 private backend: BackendService,
                 @Inject(DOCUMENT) private document: any) {
@@ -64,9 +64,9 @@ export class VerificationComponent implements OnInit, OnDestroy {
         this.device_info = this.deviceService.getDeviceInfo();
         this.telegram_url = '';
         this.buttons = [];
-        
+
     }
-    
+
     load(){
 
         this.backend.getTwitchData(this.channelName)
@@ -84,12 +84,12 @@ export class VerificationComponent implements OnInit, OnDestroy {
             this.twitch_user.logo = 'https://static-cdn.jtvnw.net/user-default-pictures/27103734-3cda-44d6-a384-f2ab71e4bb85-profile_image-70x70.jpg';
             this.stopLoading()
         });
-        
+
     }
 
     startLoading(){
         this.waiting = true;
-        setTimeout(() => 
+        setTimeout(() =>
         {
             this.stopLoading();
         },
@@ -106,12 +106,12 @@ export class VerificationComponent implements OnInit, OnDestroy {
     }
     ngOnInit(): void {
 
-    }    
+    }
     changeLoading(){
         this.waiting = !this.waiting;
     }
     checkParams(){
-        if (this.urlParams.hash && this.urlParams.hash.length > 20){
+        if (this.urlParams.hash && this.urlParams.hash.length > 3){
             this.haveParams = true;
             this.status_text = this.getTranslation('header_success');
             this.callData();
@@ -175,7 +175,7 @@ export class VerificationComponent implements OnInit, OnDestroy {
     getTranslationEn(key: string): string{
         return translationEn.find(x => x.value == key).title;
     }
-    
+
 
     getTranslationRu(key: string): string{
         return translationRu.find(x => x.value == key).title;
@@ -194,11 +194,11 @@ export class VerificationComponent implements OnInit, OnDestroy {
             redirect_uri: url,
             scope: scopes,
             state: this.channelName,
-            
+
         }
         //let target = `https://id.twitch.tv/oauth2/authorize?${this.urlParameters(params)}`
         let target = `https://id.twitch.tv/oauth2/authorize?${this.urlEncodeParameters(params)}`
-        
+
         this.document.location.href = target;
       }
 
